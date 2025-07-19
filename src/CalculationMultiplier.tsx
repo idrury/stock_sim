@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import { StatusView } from "./presentation/StatusView";
 import { reduceGraph } from "./assets/functions";
 
-function CalculationMultiplier() {
+function CalculationMultiplier () {
   // Add bias state for each risk level
   const [lowRisk, setLowRisk] = useState<StockGraphParamater[]>([
     { value: 7, date: DateTime.now().toFormat("yy:mm:dd") },
@@ -38,7 +38,7 @@ function CalculationMultiplier() {
   const numIntervals = 80;
 
   // Helper to apply multiplier, now takes bias as argument
-  function getNextValueDynamic(
+  function getNextValueDynamic (
     value: number,
     posMultiplier: number,
     negMultiplier: number,
@@ -62,9 +62,9 @@ function CalculationMultiplier() {
   React.useEffect(() => {
     const interval = setInterval(() => {
       // Slightly increase bias each interval (e.g., 0.0001)
-      setLowBias((prev) => Math.min(prev + 0.01, 0.215));
-      setMediumBias((prev) => Math.min(prev + 0.01, 0.215));
-      setHighBias((prev) => Math.min(prev + 0.01, 0.215));
+      setLowBias((prev) => Math.min(prev + 0.01, 0.217));
+      setMediumBias((prev) => Math.min(prev + 0.01, 0.217));
+      setHighBias((prev) => Math.min(prev + 0.01, 0.217));
 
       setLowRisk((prev) =>
         reduceGraph(
@@ -134,7 +134,7 @@ function CalculationMultiplier() {
         return next;
       });
       setSeconds((prev) => prev + 1);
-    }, 1000);
+    }, 500);
     return () => clearInterval(interval);
   }, [
     lowBias,
@@ -158,7 +158,7 @@ function CalculationMultiplier() {
 
       <p>{(Math.floor(seconds) * 60) / 600} mins</p>
       <div className="row boxedDark w100 p2 mb2 middle">
-        <div className="textLeft RiskCard pr3 pl2" style={{width: 250}}>
+        <div className="textLeft RiskCard pr3 pl2" style={{ width: 250 }}>
           <h2 style={{ color: "var(--safeColor)" }}>Drury Inc.</h2>
           <p className="textLeft pt2 pb3">Low Risk</p>
           <h1 className="textLeft">
@@ -166,12 +166,12 @@ function CalculationMultiplier() {
           </h1>
         </div>
         <div className="w100" style={{ height: "100%" }}>
-          <StatusView data={lowRisk}  color={"var(--safeColor"} />
+          <StatusView data={lowRisk} color={"var(--safeColor"} />
         </div>
       </div>
 
       <div className="row boxedDark w100 p2 mb2 middle">
-         <div className="textLeft pr3 pl2" style={{width: 250}}>
+        <div className="textLeft pr3 pl2" style={{ width: 250 }}>
           <h2 style={{ color: "var(--warningColor)" }}>Duffman Co.</h2>
           <p className="textLeft pt2 pb3">Medium Risk</p>
           <h1 className="textLeft">
@@ -179,12 +179,12 @@ function CalculationMultiplier() {
           </h1>
         </div>
         <div className="w100" style={{ height: "100%" }}>
-          <StatusView data={mediumRisk}  color={"var(--warningColor"}/>
+          <StatusView data={mediumRisk} color={"var(--warningColor"} />
         </div>
       </div>
 
       <div className="row boxedDark w100 p2 mb2 middle">
-        <div className="RiskCard high pr3 pl2" style={{width: 250}}>
+        <div className="RiskCard high pr3 pl2" style={{ width: 250 }}>
           <h2 className="textLeft" style={{ color: "var(--dangerColor)" }}>
             Lawrie Coin
           </h2>
