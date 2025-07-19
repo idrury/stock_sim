@@ -5,12 +5,11 @@ import { DateTime } from "luxon";
 import { StatusView } from "./presentation/StatusView";
 import { reduceGraph } from "./assets/functions";
 
-function CalculationMultiplier ({
+function CalculationMultiplier({
   crashFlag,
 }: {
   crashFlag?: boolean;
 }) {
-
   const numIntervals = 80;
   const dateFormat = "hh:mm a";
 
@@ -53,7 +52,6 @@ function CalculationMultiplier ({
   const highRiskPosMultiplier = 1.3;
   const highRiskNegMultiplier = 0.8;
 
-
   React.useEffect(() => {
     if (crashFlag !== undefined) {
       setLowRisk((prev) => [
@@ -88,7 +86,7 @@ function CalculationMultiplier ({
   }, [crashFlag]);
 
   // Helper to apply multiplier, now takes bias as argument
-  function getNextValueDynamic (
+  function getNextValueDynamic(
     value: number,
     posMultiplier: number,
     negMultiplier: number,
@@ -195,18 +193,29 @@ function CalculationMultiplier ({
         }}
       ></div>
 
-
       <div className="row boxedDark w100 p2 mb2 middle">
-        <div className="row">
-          <div className="col textLeft RiskCard pr3 pl2" style={{ width: 250 }}>
+        <div className="row middle ml2">
+          <img
+            src="/Isaac-Drury-Young-1-1.jpg"
+            alt="Drury Inc."
+            className="mr2"
+            style={{
+              maxWidth: "160px",
+              maxHeight: "160px",
+              width: "100%",
+              height: "auto",
+              borderRadius: "var(--borderRadius)",
+            }}
+          />
+          <div
+            className="col textLeft RiskCard pr3 pl2"
+            style={{ width: 250 }}
+          >
             <h2 style={{ color: "var(--safeColor)" }}>Drury Inc.</h2>
             <p className="textLeft pt2 pb3">Low Risk</p>
             <h1 className="textLeft">
               ${lowRisk[lowRisk.length - 1]?.value.toFixed(0)}
             </h1>
-          </div>
-          <div className="col" style={{ display: 'flex', justifyContent: 'center' }}>
-            <img src="/Isaac-Drury-Young-1-1.jpg" alt="Drury Inc." style={{ maxWidth: '120px', maxHeight: '120px', width: '100%', height: 'auto', borderRadius: '8px' }} />
           </div>
         </div>
         <div className="w100" style={{ height: "100%" }}>
@@ -215,27 +224,59 @@ function CalculationMultiplier ({
       </div>
 
       <div className="row boxedDark w100 p2 mb2 middle">
-        <div className="row">
-          <div className="textLeft pr3 pl2" style={{ width: 250 }}>
-            <h2 style={{ color: "var(--warningColor)" }}>Duffman Co.</h2>
+        <div className="row middle pl2">
+          <img
+            src="/Duffman 1-1.jpg"
+            alt="Drury Inc."
+            className="mr2"
+            style={{
+              maxWidth: "160px",
+              maxHeight: "160px",
+              width: "100%",
+              height: "auto",
+              borderRadius: "var(--borderRadius)",
+            }}
+          />
+          <div className="textLeft pl2" style={{ width: 250 }}>
+            <h2 style={{ color: "var(--warningColor)" }}>
+              Duffman Co.
+            </h2>
             <p className="textLeft pt2 pb3">Medium Risk</p>
             <h1 className="textLeft">
               ${mediumRisk[mediumRisk.length - 1]?.value.toFixed(0)}
             </h1>
           </div>
-          <div className="col" style={{ display: 'flex', justifyContent: 'center' }}>
-            <img src="/Duffman 1-1.jpg" alt="Drury Inc." style={{ maxWidth: '120px', maxHeight: '120px', width: '100%', height: 'auto', borderRadius: '8px' }} />
-          </div>
         </div>
         <div className="w100" style={{ height: "100%" }}>
-          <StatusView data={mediumRisk} color={"var(--warningColor)"} />
+          <StatusView
+            data={mediumRisk}
+            color={"var(--warningColor)"}
+          />
         </div>
       </div>
 
       <div className="row boxedDark w100 p2 mb2 middle">
-        <div className="row">
-          <div className="RiskCard high pr3 pl2" style={{ width: 250 }}>
-            <h2 className="textLeft" style={{ color: "var(--dangerColor)" }}>
+        <div className="row middle pl2">
+          <img
+            src="/Mullet-Man-Lawrie-1-1.png"
+            alt="Lawrie Coin"
+            className="mr2"
+            style={{
+              maxWidth: "160px",
+              maxHeight: "160px",
+              width: "100%",
+              height: "auto",
+              borderRadius: "var(--borderRadius)",
+            }}
+          />
+          <div
+            className="RiskCard high pr3 pl2"
+            style={{ width: 250 }}
+          >
+            <h2
+              className="textLeft"
+              style={{ color: "var(--dangerColor)" }}
+            >
               Lawrie Coin
             </h2>
             <p className="textLeft pt2 pb3">High Risk</p>
@@ -243,9 +284,10 @@ function CalculationMultiplier ({
               ${highRisk[highRisk.length - 1]?.value.toFixed(0)}
             </h1>
           </div>
-          <div className="col" style={{ display: 'flex', justifyContent: 'center' }}>
-            <img src="/Mullet-Man-Lawrie-1-1.png" alt="Lawrie Coin" style={{ maxWidth: '120px', maxHeight: '120px', width: '100%', height: 'auto', borderRadius: '8px' }} />
-          </div>
+          <div
+            className="col"
+            style={{ display: "flex", justifyContent: "center" }}
+          ></div>
         </div>
         <div className="w100 " style={{ height: "100%" }}>
           <StatusView data={highRisk} color={"var(--dangerColor)"} />
