@@ -5,49 +5,77 @@ import { DateTime } from "luxon";
 import { StatusView } from "./presentation/StatusView";
 
 function CalculationMultiplier () {
+  // Add bias state for each risk level
   const [lowRisk, setLowRisk] = useState<StockGraphParamater[]>([
     { value: 3, date: DateTime.now().toFormat("yy:mm:dd") },
   ]);
-  const [mediumRisk, setMediumRisk] = useState<StockGraphParamater[]>(
-    [{ value: 5, date: DateTime.now().toFormat("yy:mm:dd") }]
-  );
-  const [highRisk, setHighRisk] = useState<StockGraphParamater[]>([
-    { value: 8, date: DateTime.now().toFormat("yy:mm:dd") },
-  ]);
+  const [lowBias, setLowBias] = useState(0.01);
 
-  const lowRiskPosMultiplier = 1.1;
+  const [mediumRisk, setMediumRisk] = useState<StockGraphParamater[]>([
+    { value: 5, date: DateTime.now().toFormat("yy:mm:dd") }
+  ]);
+  const [mediumBias, setMediumBias] = useState(0.01);
+
+  const [highRisk, setHighRisk] = useState<StockGraphParamater[]>([
+    { value: 8, date: DateTime.now().toFormat("yy:mm:dd") }
+  ]);
+  const [highBias, setHighBias] = useState(0.01);
+
+
+  const [lowCenter, setLowCenter] = useState(10);
+  const [mediumCenter, setMediumCenter] = useState(15);
+  const [highCenter, setHighCenter] = useState(20);
+
+
+  const lowRiskPosMultiplier = 1.08;
   const lowRiskNegMultiplier = 0.95;
 
-  const mediumRiskPosMultiplier = 1.2;
+  const mediumRiskPosMultiplier = 1.15;
   const mediumRiskNegMultiplier = 0.9;
 
   const highRiskPosMultiplier = 1.3;
-  const highRiskNegMultiplier = 0.85;
+  const highRiskNegMultiplier = 0.8;
   const [seconds, setSeconds] = useState(0);
 
-  // Helper to apply multiplier
-  const getNextValue = (
-    risk: number,
+  // Helper to apply multiplier, now takes bias as argument
+  function getNextValueDynamic (
+    value: number,
     posMultiplier: number,
-    negMultiplier: number
-  ): number => {
-    if (Math.random() > 0.4) {
-      return risk * posMultiplier;
-    } else {
-      return risk * negMultiplier;
-    }
-  };
+    negMultiplier: number,
+    bias: number,
+    center: number,
+    k: number
+  ): number {
+    // Sigmoid: as value increases above center, chance to go down increases
+    // As value decreases below center, chance to go up increases
+    // bias keeps a small upward tendency
+    const upChance = 1 / (1 + Math.exp(k * (value - center))) + bias;
+    const clampedUpChance = Math.min(1, Math.max(0, upChance));
 
-  // Update values every 10 seconds
+    if (Math.random() < clampedUpChance) {
+      return value * posMultiplier;
+    } else {
+      return value * negMultiplier;
+    }
+  }
+
   React.useEffect(() => {
     const interval = setInterval(() => {
+      // Slightly increase bias each interval (e.g., 0.0001)
+      setLowBias(prev => Math.min(prev + 0.0001, 0.21));
+      setMediumBias(prev => Math.min(prev + 0.0001, 0.21));
+      setHighBias(prev => Math.min(prev + 0.0001, 0.21));
+
       setLowRisk((prev) => [
         ...prev,
         {
-          value: getNextValue(
+          value: getNextValueDynamic(
             prev[prev.length - 1]?.value || 0,
             lowRiskPosMultiplier,
-            lowRiskNegMultiplier
+            lowRiskNegMultiplier,
+            lowBias,
+            lowCenter,    // use state for center
+            0.15
           ),
           date: DateTime.now().toFormat("hh:mm:ss"),
         },
@@ -55,10 +83,13 @@ function CalculationMultiplier () {
       setMediumRisk((prev) => [
         ...prev,
         {
-          value: getNextValue(
+          value: getNextValueDynamic(
             prev[prev.length - 1]?.value || 0,
             mediumRiskPosMultiplier,
-            mediumRiskNegMultiplier
+            mediumRiskNegMultiplier,
+            mediumBias,
+            mediumCenter,
+            0.15
           ),
           date: DateTime.now().toFormat("hh:mm:ss"),
         },
@@ -66,18 +97,31 @@ function CalculationMultiplier () {
       setHighRisk((prev) => [
         ...prev,
         {
-          value: getNextValue(
+          value: getNextValueDynamic(
             prev[prev.length - 1]?.value || 0,
             highRiskPosMultiplier,
-            highRiskNegMultiplier
+            highRiskNegMultiplier,
+            highBias,
+            highCenter,
+            0.15
           ),
           date: DateTime.now().toFormat("hh:mm:ss"),
         },
       ]);
-      setSeconds((prev) => prev + 1);
+      setSeconds((prev) => {
+        const next = prev + 1;
+        // Every 600 ticks (1 minute), increase center by 1%
+        if (next % 600 === 0) {
+          setLowCenter(c => c * 1.01);
+          setMediumCenter(c => c * 1.01);
+          setHighCenter(c => c * 1.01);
+        }
+        return next;
+      });
     }, 100);
     return () => clearInterval(interval);
-  }, []);
+  }, [lowBias, mediumBias, highBias, lowCenter, mediumCenter, highCenter]);
+
 
   return (
     <div>
