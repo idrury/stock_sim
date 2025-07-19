@@ -169,7 +169,7 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
         return next;
       });
       setSeconds((prev) => prev + 1);
-    }, 500);
+    }, 10000);
     return () => clearInterval(interval);
   }, [
     lowBias,
