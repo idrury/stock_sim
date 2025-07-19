@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import { StatusView } from "./presentation/StatusView";
 import { getNextValue, reduceGraph } from "./assets/functions";
 
-function CalculationMultiplier() {
+function CalculationMultiplier () {
   const [lowRisk, setLowRisk] = useState<StockGraphParamater[]>([
     { value: 3, date: DateTime.now().toFormat("yy:mm:dd") },
   ]);

@@ -30,7 +30,6 @@ function App() {
     <>
 
       <div>
-        <h2>Calculation Multiplier</h2>
         <CalculationMultiplier />
       </div>
     </>
