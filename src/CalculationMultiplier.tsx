@@ -57,6 +57,7 @@ function CalculationMultiplier () {
       </div>
     </div>
 
+
     // Starts at low, med, high,
     // Then every 10 seconds, it gets timesed by a multiplier.
     // There are 2 multiplers for every risk level

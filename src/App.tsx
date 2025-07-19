@@ -10,7 +10,6 @@ function App () {
         <StatusView />
       </div>
       <div>
-        <h2>Calculation Multiplier</h2>
         <CalculationMultiplier />
       </div>
     </>
