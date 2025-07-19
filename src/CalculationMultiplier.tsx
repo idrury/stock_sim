@@ -5,20 +5,38 @@ import { DateTime } from "luxon";
 import { StatusView } from "./presentation/StatusView";
 import { reduceGraph } from "./assets/functions";
 
-function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
+function CalculationMultiplier ({
+  crashFlag,
+}: {
+  crashFlag?: boolean;
+}) {
+
+  const numIntervals = 80;
+  const dateFormat = "hh:mm a";
+
+  const initialLow = 7;
+  const initialMedium = 12;
+  const initialHigh = 16;
+  const initialLowBias = 0.01;
+  const initialMediumBias = 0.01;
+  const initialHighBias = 0.01;
+  const initialLowCenter = 10;
+  const initialMediumCenter = 15;
+  const initialHighCenter = 20;
+
   // Add bias state for each risk level
   const [lowRisk, setLowRisk] = useState<StockGraphParamater[]>([
-    { value: 7, date: DateTime.now().toFormat("yy:mm:dd") },
+    { value: 7, date: DateTime.now().toFormat(dateFormat) },
   ]);
   const [lowBias, setLowBias] = useState(0.01);
 
   const [mediumRisk, setMediumRisk] = useState<StockGraphParamater[]>(
-    [{ value: 12, date: DateTime.now().toFormat("yy:mm:dd") }]
+    [{ value: 12, date: DateTime.now().toFormat(dateFormat) }]
   );
   const [mediumBias, setMediumBias] = useState(0.01);
 
   const [highRisk, setHighRisk] = useState<StockGraphParamater[]>([
-    { value: 16, date: DateTime.now().toFormat("yy:mm:dd") },
+    { value: 16, date: DateTime.now().toFormat(dateFormat) },
   ]);
   const [highBias, setHighBias] = useState(0.01);
 
@@ -34,32 +52,30 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
 
   const highRiskPosMultiplier = 1.3;
   const highRiskNegMultiplier = 0.8;
-  const [seconds, setSeconds] = useState(0);
-  const numIntervals = 80;
 
-  const initialLow = 7;
-  const initialMedium = 12;
-  const initialHigh = 16;
-  const initialLowBias = 0.01;
-  const initialMediumBias = 0.01;
-  const initialHighBias = 0.01;
-  const initialLowCenter = 10;
-  const initialMediumCenter = 15;
-  const initialHighCenter = 20;
 
   React.useEffect(() => {
     if (crashFlag !== undefined) {
-      setLowRisk(prev => [
+      setLowRisk((prev) => [
         ...prev.slice(0, -1),
-        { value: initialLow, date: DateTime.now().toFormat("yy:mm:dd") }
+        {
+          value: initialLow,
+          date: DateTime.now().toFormat(dateFormat),
+        },
       ]);
-      setMediumRisk(prev => [
+      setMediumRisk((prev) => [
         ...prev.slice(0, -1),
-        { value: initialMedium, date: DateTime.now().toFormat("yy:mm:dd") }
+        {
+          value: initialMedium,
+          date: DateTime.now().toFormat(dateFormat),
+        },
       ]);
-      setHighRisk(prev => [
+      setHighRisk((prev) => [
         ...prev.slice(0, -1),
-        { value: initialHigh, date: DateTime.now().toFormat("yy:mm:dd") }
+        {
+          value: initialHigh,
+          date: DateTime.now().toFormat(dateFormat),
+        },
       ]);
       setLowBias(initialLowBias);
       setMediumBias(initialMediumBias);
@@ -67,7 +83,6 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
       setLowCenter(initialLowCenter);
       setMediumCenter(initialMediumCenter);
       setHighCenter(initialHighCenter);
-      setSeconds(0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [crashFlag]);
@@ -114,7 +129,7 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
                 lowCenter, // use state for center
                 0.15
               ),
-              date: DateTime.now().toFormat("hh:mm:ss"),
+              date: DateTime.now().toFormat(dateFormat),
             },
           ],
           numIntervals
@@ -133,7 +148,7 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
                 mediumCenter,
                 0.15
               ),
-              date: DateTime.now().toFormat("hh:mm:ss"),
+              date: DateTime.now().toFormat(dateFormat),
             },
           ],
           numIntervals
@@ -152,24 +167,13 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
                 highCenter,
                 0.15
               ),
-              date: DateTime.now().toFormat("hh:mm:ss"),
+              date: DateTime.now().toFormat(dateFormat),
             },
           ],
           numIntervals
         )
       );
-      setSeconds((prev) => {
-        const next = prev + 1;
-        // Every 600 ticks (1 minute), increase center by 1%
-        if (next % 600 === 0) {
-          setLowCenter((c) => c * 1.01);
-          setMediumCenter((c) => c * 1.01);
-          setHighCenter((c) => c * 1.01);
-        }
-        return next;
-      });
-      setSeconds((prev) => prev + 1);
-    }, 10000);
+    }, 1000);
     return () => clearInterval(interval);
   }, [
     lowBias,
@@ -191,14 +195,14 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
         }}
       ></div>
 
-      <p>{(Math.floor(seconds) * 60) / 600} mins</p>
+
       <div className="row boxedDark w100 p2 mb2 middle">
         <div className="row">
           <div className="col textLeft RiskCard pr3 pl2" style={{ width: 250 }}>
             <h2 style={{ color: "var(--safeColor)" }}>Drury Inc.</h2>
             <p className="textLeft pt2 pb3">Low Risk</p>
             <h1 className="textLeft">
-              ${lowRisk[lowRisk.length - 1]?.value.toFixed(2)}
+              ${lowRisk[lowRisk.length - 1]?.value.toFixed(0)}
             </h1>
           </div>
           <div className="col" style={{ display: 'flex', justifyContent: 'center' }}>
@@ -216,7 +220,7 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
             <h2 style={{ color: "var(--warningColor)" }}>Duffman Co.</h2>
             <p className="textLeft pt2 pb3">Medium Risk</p>
             <h1 className="textLeft">
-              ${mediumRisk[mediumRisk.length - 1]?.value.toFixed(2)}
+              ${mediumRisk[mediumRisk.length - 1]?.value.toFixed(0)}
             </h1>
           </div>
           <div className="col" style={{ display: 'flex', justifyContent: 'center' }}>
@@ -236,7 +240,7 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
             </h2>
             <p className="textLeft pt2 pb3">High Risk</p>
             <h1 className="textLeft">
-              ${highRisk[highRisk.length - 1]?.value.toFixed(2)}
+              ${highRisk[highRisk.length - 1]?.value.toFixed(0)}
             </h1>
           </div>
           <div className="col" style={{ display: 'flex', justifyContent: 'center' }}>
@@ -248,13 +252,6 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
         </div>
       </div>
     </div>
-    // Starts at low, med, high,
-    // Then every 10 seconds, it gets timesed by a multiplier.
-    // There are 2 multiplers for every risk level
-    // Low: 1.1, 0.95
-    // Medium: 1.2, 0.9
-    // High: 1.3, 0.85
-    // The multiplier is applied to each risk level every 10 seconds
   );
 }
 
