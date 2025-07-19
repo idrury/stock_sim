@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import { StatusView } from "./presentation/StatusView";
 import { reduceGraph } from "./assets/functions";
 
-function CalculationMultiplier({
+function CalculationMultiplier ({
   crashFlag,
 }: {
   crashFlag?: boolean;
@@ -86,7 +86,7 @@ function CalculationMultiplier({
   }, [crashFlag]);
 
   // Helper to apply multiplier, now takes bias as argument
-  function getNextValueDynamic(
+  function getNextValueDynamic (
     value: number,
     posMultiplier: number,
     negMultiplier: number,
@@ -109,10 +109,11 @@ function CalculationMultiplier({
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      // Slightly increase bias each interval (e.g., 0.0001)
-      setLowBias((prev) => Math.min(prev + 0.01, 0.217));
-      setMediumBias((prev) => Math.min(prev + 0.01, 0.217));
-      setHighBias((prev) => Math.min(prev + 0.01, 0.217));
+      // Slightly increase bias each interval such as 0.001
+      // Ensure bias does not exceed a threshold such as 0.217
+      setLowBias((prev) => Math.min(prev + 0.001, 0.217));
+      setMediumBias((prev) => Math.min(prev + 0.0008, 0.22));
+      setHighBias((prev) => Math.min(prev + 0.0007, 0.23));
 
       setLowRisk((prev) =>
         reduceGraph(
