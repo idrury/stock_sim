@@ -169,7 +169,7 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
         return next;
       });
       setSeconds((prev) => prev + 1);
-    }, 500);
+    }, 10000);
     return () => clearInterval(interval);
   }, [
     lowBias,
@@ -197,7 +197,7 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
           <h2 style={{ color: "var(--safeColor)" }}>Drury Inc.</h2>
           <p className="textLeft pt2 pb3">Low Risk</p>
           <h1 className="textLeft">
-            ${lowRisk[lowRisk.length - 1]?.value.toFixed(2)}
+            ${lowRisk[lowRisk.length - 1]?.value.toFixed(0)}
           </h1>
         </div>
         <div className="w100" style={{ height: "100%" }}>
@@ -210,7 +210,7 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
           <h2 style={{ color: "var(--warningColor)" }}>Duffman Co.</h2>
           <p className="textLeft pt2 pb3">Medium Risk</p>
           <h1 className="textLeft">
-            ${mediumRisk[mediumRisk.length - 1]?.value.toFixed(2)}
+            ${mediumRisk[mediumRisk.length - 1]?.value.toFixed(0)}
           </h1>
         </div>
         <div className="w100" style={{ height: "100%" }}>
@@ -225,7 +225,7 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
           </h2>
           <p className="textLeft pt2 pb3">High Risk</p>
           <h1 className="textLeft">
-            ${highRisk[highRisk.length - 1]?.value.toFixed(2)}
+            ${highRisk[highRisk.length - 1]?.value.toFixed(0)}
           </h1>
         </div>
         <div className="w100 " style={{ height: "100%" }}>
@@ -233,13 +233,6 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
         </div>
       </div>
     </div>
-    // Starts at low, med, high,
-    // Then every 10 seconds, it gets timesed by a multiplier.
-    // There are 2 multiplers for every risk level
-    // Low: 1.1, 0.95
-    // Medium: 1.2, 0.9
-    // High: 1.3, 0.85
-    // The multiplier is applied to each risk level every 10 seconds
   );
 }
 
