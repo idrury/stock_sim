@@ -38,16 +38,19 @@ function CalculationMultiplier () {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch' }}>
       <div className="RiskCard">
-        <h1>Low Risk</h1>
-        <h2>{lowRisk.toFixed(2)}</h2>
+        <h1 style={{ marginTop: 5 }}>SafeCo</h1>
+        <p style={{ marginBottom: 20, marginTop: -25 }}>Low Risk</p>
+        <h2 style={{ marginBottom: 5 }}>{lowRisk.toFixed(1)}</h2>
       </div>
       <div className="RiskCard">
-        <h1>Medium Risk</h1>
-        <h2>{mediumRisk.toFixed(2)}</h2>
+        <h1 style={{ marginTop: 5 }}>Apple</h1>
+        <p style={{ marginBottom: 20, marginTop: -25 }}>Medium Risk</p>
+        <h2 style={{ marginBottom: 5 }}>{mediumRisk.toFixed(1)}</h2>
       </div>
       <div className="RiskCard">
-        <h1>High Risk</h1>
-        <h2>{highRisk.toFixed(2)}</h2>
+        <h1 style={{ marginTop: 5 }}>DogeCoin</h1>
+        <p style={{ marginBottom: 20, marginTop: -25 }}>High Risk</p>
+        <h2 style={{ marginBottom: 5 }}>{highRisk.toFixed(1)}</h2>
       </div>
     </div>
 
