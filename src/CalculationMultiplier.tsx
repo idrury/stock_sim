@@ -3,6 +3,7 @@ import React from "react";
 import { StockGraphParamater } from "./assets/types";
 import { DateTime } from "luxon";
 import { StatusView } from "./presentation/StatusView";
+import { getNextValue, reduceGraph } from "./assets/functions";
 
 function CalculationMultiplier() {
   const [lowRisk, setLowRisk] = useState<StockGraphParamater[]>([
@@ -24,24 +25,13 @@ function CalculationMultiplier() {
   const highRiskPosMultiplier = 1.3;
   const highRiskNegMultiplier = 0.85;
   const [seconds, setSeconds] = useState(0);
+  const numIntervals = 80;
 
-  // Helper to apply multiplier
-  const getNextValue = (
-    risk: number,
-    posMultiplier: number,
-    negMultiplier: number
-  ): number => {
-    if (Math.random() > 0.4) {
-      return risk * posMultiplier;
-    } else {
-      return risk * negMultiplier;
-    }
-  };
 
   // Update values every 10 seconds
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setLowRisk((prev) => [
+      setLowRisk((prev) => reduceGraph([
         ...prev,
         {
           value: getNextValue(
@@ -51,8 +41,8 @@ function CalculationMultiplier() {
           ),
           date: DateTime.now().toFormat("hh:mm:ss"),
         },
-      ]);
-      setMediumRisk((prev) => [
+      ], numIntervals));
+      setMediumRisk((prev) => reduceGraph([
         ...prev,
         {
           value: getNextValue(
@@ -62,8 +52,8 @@ function CalculationMultiplier() {
           ),
           date: DateTime.now().toFormat("hh:mm:ss"),
         },
-      ]);
-      setHighRisk((prev) => [
+      ], numIntervals));
+      setHighRisk((prev) => reduceGraph([
         ...prev,
         {
           value: getNextValue(
@@ -73,7 +63,7 @@ function CalculationMultiplier() {
           ),
           date: DateTime.now().toFormat("hh:mm:ss"),
         },
-      ]);
+      ], numIntervals));
       setSeconds((prev) => prev + 1);
     }, 100);
     return () => clearInterval(interval);
@@ -104,7 +94,7 @@ function CalculationMultiplier() {
             Medium Risk
           </p>
           <h2 style={{ marginBottom: 5, fontSize: "2.5rem" }}>
-            {mediumRisk[lowRisk.length - 1]?.value.toFixed(2)}
+            {mediumRisk[mediumRisk.length - 1]?.value.toFixed(2)}
           </h2>
         </div>
         <div className="RiskCard high">
@@ -116,7 +106,7 @@ function CalculationMultiplier() {
             High Risk
           </p>
           <h2 style={{ marginBottom: 5, fontSize: "2.5rem" }}>
-            {highRisk[lowRisk.length - 1]?.value.toFixed(2)}
+            {highRisk[highRisk.length - 1]?.value.toFixed(2)}
           </h2>
         </div>
       </div>

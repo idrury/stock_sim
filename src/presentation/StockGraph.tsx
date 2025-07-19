@@ -61,7 +61,7 @@ export default function StockGraph({ data }: StockGraphParams) {
           axisLine={false}
           tickLine={false}
           tickMargin={10}
-          interval={4}
+          interval={Math.round(data.length/5)}
           style={{ fill: "var(--text)" }}
         />
         <YAxis
