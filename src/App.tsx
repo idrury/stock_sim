@@ -29,7 +29,6 @@ function App() {
   return (
     <>
       <div>
-        <StatusView data={createDummyData(10, 120, 1)} />
 
       </div>
       <div>
