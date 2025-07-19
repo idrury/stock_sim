@@ -173,7 +173,7 @@ function CalculationMultiplier({
           numIntervals
         )
       );
-    }, 1000);
+    }, 10000);
     return () => clearInterval(interval);
   }, [
     lowBias,
