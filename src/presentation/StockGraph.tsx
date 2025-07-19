@@ -19,7 +19,6 @@ interface ToolTipParams {
 }
 
 export default function StockGraph({ data }: StockGraphParams) {
-    console.log(data)
   return (
     <ResponsiveContainer width="100%" height={400}>
       <AreaChart
