@@ -20,7 +20,7 @@ interface ToolTipParams {
 
 export default function StockGraph({ data }: StockGraphParams) {
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={300}>
       <AreaChart
         data={data}
         margin={{

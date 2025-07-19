@@ -1,12 +1,12 @@
 :root {
-  font-family: "Roboto", sans-serif;
+  font-family: "Sora", sans-serif;
   line-height: 1;
 
   background-repeat: no-repeat;
 
   
 
-  color-scheme: light;
+  color-scheme: dark;
   --text: #1e1e1e;
   --background: #ffffff;
   --smallAccent: #efefef;
@@ -20,9 +20,9 @@
     var(--background)
   );
   --primaryGradient: linear-gradient(to left, #0097b2, #146775);
-  --warningColor: #faae88;
-  --safeColor: #c8fa88;
-  --dangerColor: #ed7373;
+  --warningColor: #ffa32c;
+  --safeColor: #64eb86;
+  --dangerColor: #f75656;
 
   --nav-bar-spacing: 300px;
   --borderRadius: 10px;
@@ -64,7 +64,7 @@ body {
 
 /** text */
 p {
-  font-family: "Roboto", sans-serif;
+  font-family: "Sora", sans-serif;
 
   margin: 0px;
   font-size: 10pt;
@@ -75,14 +75,14 @@ p {
 h1 {
   text-align: center;
   color: var(--text);
-  font-family: "Nunito", sans-serif;
+  font-family: "Sora", sans-serif;
   font-weight: 700;
   font-size: 40pt;
   line-height: 1;
 }
 
 h2 {
-  font-family: "Nunito", sans-serif;
+  font-family: "Sora", sans-serif;
   font-weight: 700 !important;
   margin: 0;
   font-size: 25pt;
@@ -90,14 +90,14 @@ h2 {
 }
 
 h3 {
-  font-family: "Nunito", sans-serif;
+  font-family: "Sora", sans-serif;
   font-weight: 800;
   font-size: 10pt;
   color: var(--text);
 }
 
 h4 {
-  font-family: "Nunito", sans-serif;
+  font-family: "Sora", sans-serif;
   padding: 0;
   margin: 0;
   font-size: 15pt;
@@ -106,7 +106,7 @@ h4 {
 }
 
 label {
-  font-family: "Roboto", sans-serif;
+  font-family: "Sora", sans-serif;
   text-align: start !important;
   justify-content: start;
   font-size: 10pt !important;
@@ -195,7 +195,7 @@ label {
 }
 
 input {
-  font-family: "Roboto", sans-serif;
+  font-family: "Sora", sans-serif;
   color: var(--text);
   background: var(--background);
   height: 50px;
@@ -257,7 +257,7 @@ input.invisible {
   background: transparent;
 }
 textarea {
-  font-family: "Roboto", sans-serif;
+  font-family: "Sora", sans-serif;
   background-color: var(--background);
 
   resize: vertical;
@@ -525,7 +525,7 @@ th {
 
 /* --- BUTTON ---*/
 button {
-  font-family: "Roboto", sans-serif;
+  font-family: "Sora", sans-serif;
   color: var(--text);
   font-weight: 500;
   font-size: 10pt;

@@ -92,16 +92,14 @@ function CalculationMultiplier() {
           alignItems: "stretch",
           gap: "24px",
         }}
-      >
-       
-        
-      </div>
+      ></div>
 
       <p>{(Math.floor(seconds) * 60) / 600} mins</p>
       <div className="row outline w100 p2 mb2 middle">
         <div className="RiskCard low pr3">
-          <span style={{ fontSize: "2rem" }}>🟢</span>
-          <h1 style={{ marginTop: 10, color: "#2e7d32" }}>SafeCo</h1>
+          <h1 style={{ marginTop: 10, color: "var(--safeColor)" }}>
+            SafeCo
+          </h1>
           <p style={{ marginBottom: 20, marginTop: -10 }}>Low Risk</p>
           <h2 style={{ marginBottom: 5, fontSize: "2.5rem" }}>
             {lowRisk[lowRisk.length - 1]?.value.toFixed(2)}
@@ -113,9 +111,10 @@ function CalculationMultiplier() {
       </div>
 
       <div className="row outline w100 p2 mb2 middle">
-         <div className="RiskCard medium pr3">
-          <span style={{ fontSize: "2rem" }}>🟡</span>
-          <h1 style={{ marginTop: 10, color: "#fbc02d" }}>Apple</h1>
+        <div className="RiskCard medium pr3">
+          <h1 style={{ marginTop: 10, color: "var(--warningColor)" }}>
+            Apple
+          </h1>
           <p style={{ marginBottom: 20, marginTop: -10 }}>
             Medium Risk
           </p>
@@ -128,10 +127,9 @@ function CalculationMultiplier() {
         </div>
       </div>
 
-       <div className="row outline w100 p2 mb2 middle">
+      <div className="row outline w100 p2 mb2 middle">
         <div className="RiskCard high pr3">
-          <span style={{ fontSize: "2rem" }}>🔴</span>
-          <h1 style={{ marginTop: 10, color: "#c62828" }}>
+          <h1 style={{ marginTop: 10, color: "var(--dangerColor)" }}>
             DogeCoin
           </h1>
           <p style={{ marginBottom: 20, marginTop: -10 }}>
@@ -142,7 +140,7 @@ function CalculationMultiplier() {
           </h2>
         </div>
         <div className="w100" style={{ height: "100%" }}>
-            <StatusView data={highRisk} />
+          <StatusView data={highRisk} />
         </div>
       </div>
     </div>
