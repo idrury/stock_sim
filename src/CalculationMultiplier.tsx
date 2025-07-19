@@ -5,20 +5,38 @@ import { DateTime } from "luxon";
 import { StatusView } from "./presentation/StatusView";
 import { reduceGraph } from "./assets/functions";
 
-function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
+function CalculationMultiplier({
+  crashFlag,
+}: {
+  crashFlag?: boolean;
+}) {
+
+    const numIntervals = 80;
+    const dateFormat = "hh:mm a";
+
+  const initialLow = 7;
+  const initialMedium = 12;
+  const initialHigh = 16;
+  const initialLowBias = 0.01;
+  const initialMediumBias = 0.01;
+  const initialHighBias = 0.01;
+  const initialLowCenter = 10;
+  const initialMediumCenter = 15;
+  const initialHighCenter = 20;
+
   // Add bias state for each risk level
   const [lowRisk, setLowRisk] = useState<StockGraphParamater[]>([
-    { value: 7, date: DateTime.now().toFormat("yy:mm:dd") },
+    { value: 7, date: DateTime.now().toFormat(dateFormat) },
   ]);
   const [lowBias, setLowBias] = useState(0.01);
 
   const [mediumRisk, setMediumRisk] = useState<StockGraphParamater[]>(
-    [{ value: 12, date: DateTime.now().toFormat("yy:mm:dd") }]
+    [{ value: 12, date: DateTime.now().toFormat(dateFormat) }]
   );
   const [mediumBias, setMediumBias] = useState(0.01);
 
   const [highRisk, setHighRisk] = useState<StockGraphParamater[]>([
-    { value: 16, date: DateTime.now().toFormat("yy:mm:dd") },
+    { value: 16, date: DateTime.now().toFormat(dateFormat) },
   ]);
   const [highBias, setHighBias] = useState(0.01);
 
@@ -34,32 +52,30 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
 
   const highRiskPosMultiplier = 1.3;
   const highRiskNegMultiplier = 0.8;
-  const [seconds, setSeconds] = useState(0);
-  const numIntervals = 80;
 
-  const initialLow = 7;
-  const initialMedium = 12;
-  const initialHigh = 16;
-  const initialLowBias = 0.01;
-  const initialMediumBias = 0.01;
-  const initialHighBias = 0.01;
-  const initialLowCenter = 10;
-  const initialMediumCenter = 15;
-  const initialHighCenter = 20;
 
   React.useEffect(() => {
     if (crashFlag !== undefined) {
-      setLowRisk(prev => [
+      setLowRisk((prev) => [
         ...prev.slice(0, -1),
-        { value: initialLow, date: DateTime.now().toFormat("yy:mm:dd") }
+        {
+          value: initialLow,
+          date: DateTime.now().toFormat(dateFormat),
+        },
       ]);
-      setMediumRisk(prev => [
+      setMediumRisk((prev) => [
         ...prev.slice(0, -1),
-        { value: initialMedium, date: DateTime.now().toFormat("yy:mm:dd") }
+        {
+          value: initialMedium,
+          date: DateTime.now().toFormat(dateFormat),
+        },
       ]);
-      setHighRisk(prev => [
+      setHighRisk((prev) => [
         ...prev.slice(0, -1),
-        { value: initialHigh, date: DateTime.now().toFormat("yy:mm:dd") }
+        {
+          value: initialHigh,
+          date: DateTime.now().toFormat(dateFormat),
+        },
       ]);
       setLowBias(initialLowBias);
       setMediumBias(initialMediumBias);
@@ -67,13 +83,12 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
       setLowCenter(initialLowCenter);
       setMediumCenter(initialMediumCenter);
       setHighCenter(initialHighCenter);
-      setSeconds(0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [crashFlag]);
 
   // Helper to apply multiplier, now takes bias as argument
-  function getNextValueDynamic (
+  function getNextValueDynamic(
     value: number,
     posMultiplier: number,
     negMultiplier: number,
@@ -114,7 +129,7 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
                 lowCenter, // use state for center
                 0.15
               ),
-              date: DateTime.now().toFormat("hh:mm:ss"),
+              date: DateTime.now().toFormat(dateFormat),
             },
           ],
           numIntervals
@@ -133,7 +148,7 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
                 mediumCenter,
                 0.15
               ),
-              date: DateTime.now().toFormat("hh:mm:ss"),
+              date: DateTime.now().toFormat(dateFormat),
             },
           ],
           numIntervals
@@ -152,24 +167,13 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
                 highCenter,
                 0.15
               ),
-              date: DateTime.now().toFormat("hh:mm:ss"),
+              date: DateTime.now().toFormat(dateFormat),
             },
           ],
           numIntervals
         )
       );
-      setSeconds((prev) => {
-        const next = prev + 1;
-        // Every 600 ticks (1 minute), increase center by 1%
-        if (next % 600 === 0) {
-          setLowCenter((c) => c * 1.01);
-          setMediumCenter((c) => c * 1.01);
-          setHighCenter((c) => c * 1.01);
-        }
-        return next;
-      });
-      setSeconds((prev) => prev + 1);
-    }, 10000);
+    }, 1000);
     return () => clearInterval(interval);
   }, [
     lowBias,
@@ -191,9 +195,12 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
         }}
       ></div>
 
-      <p>{(Math.floor(seconds) * 60) / 600} mins</p>
+
       <div className="row boxedDark w100 p2 mb2 middle">
-        <div className="textLeft RiskCard pr3 pl2" style={{ width: 250 }}>
+        <div
+          className="textLeft RiskCard pr3 pl2"
+          style={{ width: 250 }}
+        >
           <h2 style={{ color: "var(--safeColor)" }}>Drury Inc.</h2>
           <p className="textLeft pt2 pb3">Low Risk</p>
           <h1 className="textLeft">
@@ -201,26 +208,34 @@ function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
           </h1>
         </div>
         <div className="w100" style={{ height: "100%" }}>
-          <StatusView data={lowRisk}  color={"var(--safeColor)"} />
+          <StatusView data={lowRisk} color={"var(--safeColor)"} />
         </div>
       </div>
 
       <div className="row boxedDark w100 p2 mb2 middle">
         <div className="textLeft pr3 pl2" style={{ width: 250 }}>
-          <h2 style={{ color: "var(--warningColor)" }}>Duffman Co.</h2>
+          <h2 style={{ color: "var(--warningColor)" }}>
+            Duffman Co.
+          </h2>
           <p className="textLeft pt2 pb3">Medium Risk</p>
           <h1 className="textLeft">
             ${mediumRisk[mediumRisk.length - 1]?.value.toFixed(0)}
           </h1>
         </div>
         <div className="w100" style={{ height: "100%" }}>
-          <StatusView data={mediumRisk}  color={"var(--warningColor)"}/>
+          <StatusView
+            data={mediumRisk}
+            color={"var(--warningColor)"}
+          />
         </div>
       </div>
 
       <div className="row boxedDark w100 p2 mb2 middle">
         <div className="RiskCard high pr3 pl2" style={{ width: 250 }}>
-          <h2 className="textLeft" style={{ color: "var(--dangerColor)" }}>
+          <h2
+            className="textLeft"
+            style={{ color: "var(--dangerColor)" }}
+          >
             Lawrie Coin
           </h2>
           <p className="textLeft pt2 pb3">High Risk</p>
