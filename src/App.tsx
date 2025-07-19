@@ -1,36 +1,28 @@
 import CalculationMultiplier from "./CalculationMultiplier";
 import "./App.css";
-import { StatusView } from "./presentation/StatusView";
-import { DateTime } from "luxon";
+
+import { useState } from "react";
+import { Controls } from "./presentation/Controls";
 
 function App() {
-  const DUMMY_DATA = new Array<{ value: number; date: string }>();
-
-  function createDummyData(
-    interval: number,
-    amount: number,
-    variation: number
-  ) {
-    let multi = 1;
-
-    for (var i = 0; i < amount; i++) {
-      DUMMY_DATA.push({
-        value: Math.random() * variation * multi + multi / 2,
-        date: DateTime.now()
-          .plus({ seconds: interval * i })
-          .toFormat("hh:ss"),
-      });
-      multi += 1;
-    }
-
-    return DUMMY_DATA;
-  }
+  const [started, setStarted] = useState(false);
 
   return (
     <>
-
-      <div>
-        <CalculationMultiplier />
+      <div className="col middle center w100">
+        <Controls
+          onStart={() => setStarted(true)}
+          onCrash={() => {
+            console.log("CRASH");
+          }}
+        />
+        {started ? (
+          <div className="w100">
+            <CalculationMultiplier />
+          </div>
+        ) : (
+          <h2>Press start to begin</h2>
+        )}
       </div>
     </>
   );

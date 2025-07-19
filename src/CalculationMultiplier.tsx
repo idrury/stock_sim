@@ -121,7 +121,7 @@ function CalculationMultiplier () {
         return next;
       });
       setSeconds((prev) => prev + 1);
-    }, 100);
+    }, 1000);
     return () => clearInterval(interval);
   }, [lowBias, mediumBias, highBias, lowCenter, mediumCenter, highCenter]);
 
@@ -136,7 +136,13 @@ function CalculationMultiplier () {
           gap: "24px",
         }}
       >
-        <div className="RiskCard low">
+
+
+      </div>
+
+      <p>{(Math.floor(seconds) * 60) / 600} mins</p>
+      <div className="row outline w100 p2 mb2 middle">
+        <div className="RiskCard low pr3">
           <span style={{ fontSize: "2rem" }}>🟢</span>
           <h1 style={{ marginTop: 10, color: "#2e7d32" }}>SafeCo</h1>
           <p style={{ marginBottom: 20, marginTop: -10 }}>Low Risk</p>
@@ -144,7 +150,13 @@ function CalculationMultiplier () {
             {lowRisk[lowRisk.length - 1]?.value.toFixed(2)}
           </h2>
         </div>
-        <div className="RiskCard medium">
+        <div className="w100" style={{ height: "100%" }}>
+          <StatusView data={lowRisk} />
+        </div>
+      </div>
+
+      <div className="row outline w100 p2 mb2 middle">
+        <div className="RiskCard medium pr3">
           <span style={{ fontSize: "2rem" }}>🟡</span>
           <h1 style={{ marginTop: 10, color: "#fbc02d" }}>Apple</h1>
           <p style={{ marginBottom: 20, marginTop: -10 }}>
@@ -154,7 +166,13 @@ function CalculationMultiplier () {
             {mediumRisk[mediumRisk.length - 1]?.value.toFixed(2)}
           </h2>
         </div>
-        <div className="RiskCard high">
+        <div className="w100" style={{ height: "100%" }}>
+          <StatusView data={mediumRisk} />
+        </div>
+      </div>
+
+      <div className="row outline w100 p2 mb2 middle">
+        <div className="RiskCard high pr3">
           <span style={{ fontSize: "2rem" }}>🔴</span>
           <h1 style={{ marginTop: 10, color: "#c62828" }}>
             DogeCoin
@@ -166,12 +184,10 @@ function CalculationMultiplier () {
             {highRisk[highRisk.length - 1]?.value.toFixed(2)}
           </h2>
         </div>
+        <div className="w100" style={{ height: "100%" }}>
+          <StatusView data={highRisk} />
+        </div>
       </div>
-
-      <p>{(Math.floor(seconds) * 60) / 600} mins</p>
-      <StatusView data={lowRisk} />
-      <StatusView data={mediumRisk} />
-      <StatusView data={highRisk} />
     </div>
     // Starts at low, med, high,
     // Then every 10 seconds, it gets timesed by a multiplier.
