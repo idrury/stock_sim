@@ -28,9 +28,7 @@ function App() {
 
   return (
     <>
-      <div>
 
-      </div>
       <div>
         <CalculationMultiplier />
       </div>

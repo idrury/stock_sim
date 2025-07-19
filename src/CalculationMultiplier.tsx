@@ -3,21 +3,22 @@ import React from "react";
 import { StockGraphParamater } from "./assets/types";
 import { DateTime } from "luxon";
 import { StatusView } from "./presentation/StatusView";
+import { reduceGraph } from "./assets/functions";
 
 function CalculationMultiplier () {
   // Add bias state for each risk level
   const [lowRisk, setLowRisk] = useState<StockGraphParamater[]>([
-    { value: 3, date: DateTime.now().toFormat("yy:mm:dd") },
+    { value: 7, date: DateTime.now().toFormat("yy:mm:dd") },
   ]);
   const [lowBias, setLowBias] = useState(0.01);
 
   const [mediumRisk, setMediumRisk] = useState<StockGraphParamater[]>([
-    { value: 5, date: DateTime.now().toFormat("yy:mm:dd") }
+    { value: 12, date: DateTime.now().toFormat("yy:mm:dd") }
   ]);
   const [mediumBias, setMediumBias] = useState(0.01);
 
   const [highRisk, setHighRisk] = useState<StockGraphParamater[]>([
-    { value: 8, date: DateTime.now().toFormat("yy:mm:dd") }
+    { value: 16, date: DateTime.now().toFormat("yy:mm:dd") }
   ]);
   const [highBias, setHighBias] = useState(0.01);
 
@@ -36,6 +37,7 @@ function CalculationMultiplier () {
   const highRiskPosMultiplier = 1.3;
   const highRiskNegMultiplier = 0.8;
   const [seconds, setSeconds] = useState(0);
+  const numIntervals = 80;
 
   // Helper to apply multiplier, now takes bias as argument
   function getNextValueDynamic (
@@ -62,11 +64,11 @@ function CalculationMultiplier () {
   React.useEffect(() => {
     const interval = setInterval(() => {
       // Slightly increase bias each interval (e.g., 0.0001)
-      setLowBias(prev => Math.min(prev + 0.0001, 0.21));
-      setMediumBias(prev => Math.min(prev + 0.0001, 0.21));
-      setHighBias(prev => Math.min(prev + 0.0001, 0.21));
+      setLowBias(prev => Math.min(prev + 0.01, 0.215));
+      setMediumBias(prev => Math.min(prev + 0.01, 0.215));
+      setHighBias(prev => Math.min(prev + 0.01, 0.215));
 
-      setLowRisk((prev) => [
+      setLowRisk((prev) => reduceGraph([
         ...prev,
         {
           value: getNextValueDynamic(
@@ -79,8 +81,8 @@ function CalculationMultiplier () {
           ),
           date: DateTime.now().toFormat("hh:mm:ss"),
         },
-      ]);
-      setMediumRisk((prev) => [
+      ], numIntervals));
+      setMediumRisk((prev) => reduceGraph([
         ...prev,
         {
           value: getNextValueDynamic(
@@ -93,8 +95,8 @@ function CalculationMultiplier () {
           ),
           date: DateTime.now().toFormat("hh:mm:ss"),
         },
-      ]);
-      setHighRisk((prev) => [
+      ], numIntervals));
+      setHighRisk((prev) => reduceGraph([
         ...prev,
         {
           value: getNextValueDynamic(
@@ -107,7 +109,7 @@ function CalculationMultiplier () {
           ),
           date: DateTime.now().toFormat("hh:mm:ss"),
         },
-      ]);
+      ], numIntervals));
       setSeconds((prev) => {
         const next = prev + 1;
         // Every 600 ticks (1 minute), increase center by 1%
@@ -118,6 +120,7 @@ function CalculationMultiplier () {
         }
         return next;
       });
+      setSeconds((prev) => prev + 1);
     }, 100);
     return () => clearInterval(interval);
   }, [lowBias, mediumBias, highBias, lowCenter, mediumCenter, highCenter]);
@@ -148,7 +151,7 @@ function CalculationMultiplier () {
             Medium Risk
           </p>
           <h2 style={{ marginBottom: 5, fontSize: "2.5rem" }}>
-            {mediumRisk[lowRisk.length - 1]?.value.toFixed(2)}
+            {mediumRisk[mediumRisk.length - 1]?.value.toFixed(2)}
           </h2>
         </div>
         <div className="RiskCard high">
@@ -160,7 +163,7 @@ function CalculationMultiplier () {
             High Risk
           </p>
           <h2 style={{ marginBottom: 5, fontSize: "2.5rem" }}>
-            {highRisk[lowRisk.length - 1]?.value.toFixed(2)}
+            {highRisk[highRisk.length - 1]?.value.toFixed(2)}
           </h2>
         </div>
       </div>
