@@ -1,44 +1,95 @@
-import { useState } from 'react'
-import React from 'react'
+import { useState } from "react";
+import React from "react";
+import { StockGraphParamater } from "./assets/types";
+import { DateTime } from "luxon";
+import { StatusView } from "./presentation/StatusView";
 
-function CalculationMultiplier () {
-  const [lowRisk, setLowRisk] = useState(3)
-  const [mediumRisk, setMediumRisk] = useState(5)
-  const [highRisk, setHighRisk] = useState(8)
+function CalculationMultiplier() {
+  const [lowRisk, setLowRisk] = useState<StockGraphParamater[]>([
+    { value: 3, date: DateTime.now().toFormat("yy:mm:dd") },
+  ]);
+  const [mediumRisk, setMediumRisk] = useState<StockGraphParamater[]>([
+    { value: 5, date: DateTime.now().toFormat("yy:mm:dd") },
+  ]);
+  const [highRisk, setHighRisk] = useState<StockGraphParamater[]>([
+    { value: 8, date: DateTime.now().toFormat("yy:mm:dd") },
+  ]);
 
-  const lowRiskPosMultiplier = 1.1
-  const lowRiskNegMultiplier = 0.95
+  const lowRiskPosMultiplier = 1.1;
+  const lowRiskNegMultiplier = 0.95;
 
-  const mediumRiskPosMultiplier = 1.2
-  const mediumRiskNegMultiplier = 0.9
+  const mediumRiskPosMultiplier = 1.2;
+  const mediumRiskNegMultiplier = 0.9;
 
-  const highRiskPosMultiplier = 1.3
-  const highRiskNegMultiplier = 0.85
+  const highRiskPosMultiplier = 1.3;
+  const highRiskNegMultiplier = 0.85;
+  const [seconds, setSeconds] = useState(0)
 
   // Helper to apply multiplier
-  const getNextValue = (risk: number, posMultiplier: number, negMultiplier: number) => {
+  const getNextValue = (
+    risk: number,
+    posMultiplier: number,
+    negMultiplier: number
+  ): number => {
     if (Math.random() > 0.4) {
-      return risk * posMultiplier
+      return risk * posMultiplier;
     } else {
-      return risk * negMultiplier
+      return risk * negMultiplier;
     }
-  }
+  };
 
   // Update values every 10 seconds
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setLowRisk(prev => getNextValue(prev, lowRiskPosMultiplier, lowRiskNegMultiplier))
-      setMediumRisk(prev => getNextValue(prev, mediumRiskPosMultiplier, mediumRiskNegMultiplier))
-      setHighRisk(prev => getNextValue(prev, highRiskPosMultiplier, highRiskNegMultiplier))
-    }, 10000)
-    return () => clearInterval(interval)
-  }, [])
+      setLowRisk(prev => [
+        ...prev,
+        {
+          value: getNextValue(
+            prev[prev.length - 1]?.value || 0,
+            lowRiskPosMultiplier,
+            lowRiskNegMultiplier
+          ),
+          date: DateTime.now().toFormat("hh:mm:ss"),
+        },
+      ]);
+     setMediumRisk(prev => [
+        ...prev,
+        {
+          value: getNextValue(
+            prev[prev.length - 1]?.value || 0,
+            mediumRiskPosMultiplier,
+            mediumRiskNegMultiplier
+          ),
+          date: DateTime.now().toFormat("hh:mm:ss"),
+        },
+      ]);
+         setHighRisk(prev => [
+        ...prev,
+        {
+          value: getNextValue(
+            prev[prev.length - 1]?.value || 0,
+            highRiskPosMultiplier,
+            highRiskNegMultiplier
+          ),
+          date: DateTime.now().toFormat("hh:mm:ss"),
+        },
+      ]);
+      setSeconds(prev => prev+1);
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div>
-      <h1>Low Risk: {lowRisk.toFixed(2)}</h1>
-      <h1>Medium Risk: {mediumRisk.toFixed(2)}</h1>
-      <h1>High Risk: {highRisk.toFixed(2)}</h1>
+      <h1>
+        Low Risk: {lowRisk[lowRisk.length - 1]?.value.toFixed(2)}
+      </h1>
+      <h1>Medium Risk: {mediumRisk[lowRisk.length - 1]?.value.toFixed(2)}</h1>
+      <h1>High Risk: {highRisk[lowRisk.length - 1]?.value.toFixed(2)}</h1>
+      <p>{(Math.floor(seconds)*60)/600} mins</p>
+      <StatusView data={lowRisk} />
+      <StatusView data={mediumRisk} />
+      <StatusView data={highRisk} />
     </div>
 
     // Starts at low, med, high,
@@ -48,7 +99,7 @@ function CalculationMultiplier () {
     // Medium: 1.2, 0.9
     // High: 1.3, 0.85
     // The multiplier is applied to each risk level every 10 seconds
-  )
+  );
 }
 
-export default CalculationMultiplier
+export default CalculationMultiplier;
