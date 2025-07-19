@@ -10,6 +10,7 @@ export interface StatusViewProps {
  * @todo Create description
  */
 export function StatusView({ data, color }: StatusViewProps) {
+
   return (
     <div>
       <StockGraph data={data} color={color} />

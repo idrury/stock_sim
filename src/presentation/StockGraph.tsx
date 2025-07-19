@@ -14,12 +14,15 @@ interface StockGraphParams {
 }
 
 interface ToolTipParams {
-    active: boolean;
-    payload: any[];
-    label:string;
+  active: boolean;
+  payload: any[];
+  label: string;
 }
 
-export default function StockGraph({ data, color }: StockGraphParams) {
+export default function StockGraph({
+  data,
+  color,
+}: StockGraphParams) {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <AreaChart
@@ -32,15 +35,63 @@ export default function StockGraph({ data, color }: StockGraphParams) {
         }}
       >
         <defs>
-          <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient
+            id="danger"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
             <stop
-              offset="0%"
-              stopColor={color}
+              offset="10%"
+              stopColor={`${"var(--dangerColor)"}`}
               stopOpacity={1}
             />
             <stop
               offset="100%"
-              stopColor={color}
+              stopColor={`${"var(--dangerColor)"}`}
+              stopOpacity={0.1}
+            />
+          </linearGradient>
+        </defs>
+
+        <defs>
+          <linearGradient
+            id="safe"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+            <stop
+              offset="10%"
+              stopColor={`${"var(--safeColor)"}`}
+              stopOpacity={1}
+            />
+            <stop
+              offset="100%"
+              stopColor={`${"var(--safeColor)"}`}
+              stopOpacity={0.1}
+            />
+          </linearGradient>
+        </defs>
+
+        <defs>
+          <linearGradient
+            id="warning"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+            <stop
+              offset="10%"
+              stopColor="var(--warningColor)"
+              stopOpacity={1}
+            />
+            <stop
+              offset="100%"
+              stopColor="var(--warningColor)"
               stopOpacity={0.1}
             />
           </linearGradient>
@@ -52,7 +103,7 @@ export default function StockGraph({ data, color }: StockGraphParams) {
           stroke={color}
           strokeWidth={1}
           radius={10}
-          fill={color}
+          fill={`url(#${color == "var(--safeColor)"? "safe" : color == "var(--warningColor)" ? "warning" : "danger"})`}
         />
 
         <XAxis
@@ -62,8 +113,8 @@ export default function StockGraph({ data, color }: StockGraphParams) {
           axisLine={false}
           tickLine={false}
           tickMargin={10}
-          interval={Math.round(data.length/5)}
-          style={{ fill: "var(--text)", fontSize: '10pt' }}
+          interval={Math.round(data.length / 5)}
+          style={{ fill: "var(--text)", fontSize: "10pt" }}
         />
         <YAxis
           dataKey="value"
@@ -72,7 +123,7 @@ export default function StockGraph({ data, color }: StockGraphParams) {
           tickCount={3}
           tickMargin={10}
           tickFormatter={(number) => `$${number}`}
-          style={{ fill: "var(--text)",fontSize: '10pt' }}
+          style={{ fill: "var(--text)", fontSize: "10pt" }}
         />
         {/**@ts-ignore */}
         <Tooltip content={CustomTooltip} />
@@ -82,7 +133,7 @@ export default function StockGraph({ data, color }: StockGraphParams) {
   );
 }
 
-function CustomTooltip({ active, payload, label }:ToolTipParams) {
+function CustomTooltip({ active, payload, label }: ToolTipParams) {
   if (active) {
     return (
       <div className="boxedDark mediumFade">
