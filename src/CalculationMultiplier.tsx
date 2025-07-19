@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import { StatusView } from "./presentation/StatusView";
 import { reduceGraph } from "./assets/functions";
 
-function CalculationMultiplier() {
+function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
   // Add bias state for each risk level
   const [lowRisk, setLowRisk] = useState<StockGraphParamater[]>([
     { value: 7, date: DateTime.now().toFormat("yy:mm:dd") },
@@ -37,8 +37,43 @@ function CalculationMultiplier() {
   const [seconds, setSeconds] = useState(0);
   const numIntervals = 80;
 
+  const initialLow = 7;
+  const initialMedium = 12;
+  const initialHigh = 16;
+  const initialLowBias = 0.01;
+  const initialMediumBias = 0.01;
+  const initialHighBias = 0.01;
+  const initialLowCenter = 10;
+  const initialMediumCenter = 15;
+  const initialHighCenter = 20;
+
+  React.useEffect(() => {
+    if (crashFlag !== undefined) {
+      setLowRisk(prev => [
+        ...prev.slice(0, -1),
+        { value: initialLow, date: DateTime.now().toFormat("yy:mm:dd") }
+      ]);
+      setMediumRisk(prev => [
+        ...prev.slice(0, -1),
+        { value: initialMedium, date: DateTime.now().toFormat("yy:mm:dd") }
+      ]);
+      setHighRisk(prev => [
+        ...prev.slice(0, -1),
+        { value: initialHigh, date: DateTime.now().toFormat("yy:mm:dd") }
+      ]);
+      setLowBias(initialLowBias);
+      setMediumBias(initialMediumBias);
+      setHighBias(initialHighBias);
+      setLowCenter(initialLowCenter);
+      setMediumCenter(initialMediumCenter);
+      setHighCenter(initialHighCenter);
+      setSeconds(0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [crashFlag]);
+
   // Helper to apply multiplier, now takes bias as argument
-  function getNextValueDynamic(
+  function getNextValueDynamic (
     value: number,
     posMultiplier: number,
     negMultiplier: number,
@@ -62,9 +97,9 @@ function CalculationMultiplier() {
   React.useEffect(() => {
     const interval = setInterval(() => {
       // Slightly increase bias each interval (e.g., 0.0001)
-      setLowBias((prev) => Math.min(prev + 0.01, 0.215));
-      setMediumBias((prev) => Math.min(prev + 0.01, 0.215));
-      setHighBias((prev) => Math.min(prev + 0.01, 0.215));
+      setLowBias((prev) => Math.min(prev + 0.01, 0.217));
+      setMediumBias((prev) => Math.min(prev + 0.01, 0.217));
+      setHighBias((prev) => Math.min(prev + 0.01, 0.217));
 
       setLowRisk((prev) =>
         reduceGraph(
@@ -134,7 +169,7 @@ function CalculationMultiplier() {
         return next;
       });
       setSeconds((prev) => prev + 1);
-    }, 1000);
+    }, 500);
     return () => clearInterval(interval);
   }, [
     lowBias,
@@ -158,7 +193,7 @@ function CalculationMultiplier() {
 
       <p>{(Math.floor(seconds) * 60) / 600} mins</p>
       <div className="row boxedDark w100 p2 mb2 middle">
-        <div className="textLeft RiskCard pr3 pl2" style={{width: 250}}>
+        <div className="textLeft RiskCard pr3 pl2" style={{ width: 250 }}>
           <h2 style={{ color: "var(--safeColor)" }}>Drury Inc.</h2>
           <p className="textLeft pt2 pb3">Low Risk</p>
           <h1 className="textLeft">
@@ -171,7 +206,7 @@ function CalculationMultiplier() {
       </div>
 
       <div className="row boxedDark w100 p2 mb2 middle">
-         <div className="textLeft pr3 pl2" style={{width: 250}}>
+        <div className="textLeft pr3 pl2" style={{ width: 250 }}>
           <h2 style={{ color: "var(--warningColor)" }}>Duffman Co.</h2>
           <p className="textLeft pt2 pb3">Medium Risk</p>
           <h1 className="textLeft">
@@ -184,7 +219,7 @@ function CalculationMultiplier() {
       </div>
 
       <div className="row boxedDark w100 p2 mb2 middle">
-        <div className="RiskCard high pr3 pl2" style={{width: 250}}>
+        <div className="RiskCard high pr3 pl2" style={{ width: 250 }}>
           <h2 className="textLeft" style={{ color: "var(--dangerColor)" }}>
             Lawrie Coin
           </h2>
