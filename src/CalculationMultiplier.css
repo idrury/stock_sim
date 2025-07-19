@@ -1,11 +1,10 @@
 .RiskCard {
   text-align: start;
-  background-color: #f9f9f9;
-  flex: 1 1 0;           /* Allow cards to grow/shrink equally */
+  background-color: var(--highAccent);
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   transition: box-shadow 0.2s, transform 0.2s;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: middle;
   align-items: start;
 }

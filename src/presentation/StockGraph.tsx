@@ -10,6 +10,7 @@ import {
 
 interface StockGraphParams {
   data: { date: string; value: number }[];
+  color: string;
 }
 
 interface ToolTipParams {
@@ -18,7 +19,7 @@ interface ToolTipParams {
     label:string;
 }
 
-export default function StockGraph({ data }: StockGraphParams) {
+export default function StockGraph({ data, color }: StockGraphParams) {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <AreaChart
@@ -34,12 +35,12 @@ export default function StockGraph({ data }: StockGraphParams) {
           <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
             <stop
               offset="0%"
-              stopColor="var(--primaryColor)"
+              stopColor={color}
               stopOpacity={1}
             />
             <stop
               offset="100%"
-              stopColor="var(--primaryColor)"
+              stopColor={color}
               stopOpacity={0.1}
             />
           </linearGradient>
@@ -48,10 +49,10 @@ export default function StockGraph({ data }: StockGraphParams) {
         <Area
           type="monotoneX"
           dataKey="value"
-          stroke="var(--primaryColor)"
+          stroke={color}
           strokeWidth={1}
           radius={10}
-          fill="url(#color)"
+          fill={color}
         />
 
         <XAxis
@@ -62,7 +63,7 @@ export default function StockGraph({ data }: StockGraphParams) {
           tickLine={false}
           tickMargin={10}
           interval={Math.round(data.length/5)}
-          style={{ fill: "var(--text)" }}
+          style={{ fill: "var(--text)", fontSize: '10pt' }}
         />
         <YAxis
           dataKey="value"
@@ -71,11 +72,11 @@ export default function StockGraph({ data }: StockGraphParams) {
           tickCount={3}
           tickMargin={10}
           tickFormatter={(number) => `$${number}`}
-          style={{ fill: "var(--text)" }}
+          style={{ fill: "var(--text)",fontSize: '10pt' }}
         />
         {/**@ts-ignore */}
         <Tooltip content={CustomTooltip} />
-        <CartesianGrid strokeDasharray="2 5" vertical={false} />
+        <CartesianGrid strokeDasharray="2 50" vertical={false} />
       </AreaChart>
     </ResponsiveContainer>
   );

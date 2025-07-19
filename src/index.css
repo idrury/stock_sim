@@ -4,14 +4,15 @@
 
   background-repeat: no-repeat;
 
-  
+
+    overflow-x: clip;
 
   color-scheme: dark;
-  --text: #1e1e1e;
-  --background: #ffffff;
-  --smallAccent: #efefef;
-  --mediumAccent: #cecece;
-  --highAccent: #3b3b3b;
+  --text: #EEEEEE;
+  --background: #111111;
+  --smallAccent: #222222;
+  --mediumAccent: #444444;
+  --highAccent: #888888;
   --primaryColor:red;
   --darkGradient: linear-gradient(
     225deg,
@@ -58,7 +59,7 @@
 }
 
 body {
-  background: linear-gradient(to right, #FFFFFF, #DDDDDD);
+  background: linear-gradient(to right, #000000, #111111);
   margin: 0;
 }
 
@@ -79,6 +80,9 @@ h1 {
   font-weight: 700;
   font-size: 40pt;
   line-height: 1;
+
+  margin: 0;
+  padding: 0;
 }
 
 h2 {
