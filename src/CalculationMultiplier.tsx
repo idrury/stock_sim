@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import { StatusView } from "./presentation/StatusView";
 import { reduceGraph } from "./assets/functions";
 
-function CalculationMultiplier () {
+function CalculationMultiplier ({ crashFlag }: { crashFlag?: boolean }) {
   // Add bias state for each risk level
   const [lowRisk, setLowRisk] = useState<StockGraphParamater[]>([
     { value: 7, date: DateTime.now().toFormat("yy:mm:dd") },
@@ -36,6 +36,41 @@ function CalculationMultiplier () {
   const highRiskNegMultiplier = 0.8;
   const [seconds, setSeconds] = useState(0);
   const numIntervals = 80;
+
+  const initialLow = 7;
+  const initialMedium = 12;
+  const initialHigh = 16;
+  const initialLowBias = 0.01;
+  const initialMediumBias = 0.01;
+  const initialHighBias = 0.01;
+  const initialLowCenter = 10;
+  const initialMediumCenter = 15;
+  const initialHighCenter = 20;
+
+  React.useEffect(() => {
+    if (crashFlag !== undefined) {
+      setLowRisk(prev => [
+        ...prev.slice(0, -1),
+        { value: initialLow, date: DateTime.now().toFormat("yy:mm:dd") }
+      ]);
+      setMediumRisk(prev => [
+        ...prev.slice(0, -1),
+        { value: initialMedium, date: DateTime.now().toFormat("yy:mm:dd") }
+      ]);
+      setHighRisk(prev => [
+        ...prev.slice(0, -1),
+        { value: initialHigh, date: DateTime.now().toFormat("yy:mm:dd") }
+      ]);
+      setLowBias(initialLowBias);
+      setMediumBias(initialMediumBias);
+      setHighBias(initialHighBias);
+      setLowCenter(initialLowCenter);
+      setMediumCenter(initialMediumCenter);
+      setHighCenter(initialHighCenter);
+      setSeconds(0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [crashFlag]);
 
   // Helper to apply multiplier, now takes bias as argument
   function getNextValueDynamic (
