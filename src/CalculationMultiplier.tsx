@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import React from 'react'
+import './CalculationMultiplier.css'
 
 function CalculationMultiplier () {
   const [lowRisk, setLowRisk] = useState(3)
@@ -9,15 +10,15 @@ function CalculationMultiplier () {
   const lowRiskPosMultiplier = 1.1
   const lowRiskNegMultiplier = 0.95
 
-  const mediumRiskPosMultiplier = 1.2
+  const mediumRiskPosMultiplier = 1.15
   const mediumRiskNegMultiplier = 0.9
 
-  const highRiskPosMultiplier = 1.3
+  const highRiskPosMultiplier = 1.21
   const highRiskNegMultiplier = 0.85
 
   // Helper to apply multiplier
   const getNextValue = (risk: number, posMultiplier: number, negMultiplier: number) => {
-    if (Math.random() > 0.4) {
+    if (Math.random() > 0.43) { // 57% chance to apply positive multiplier
       return risk * posMultiplier
     } else {
       return risk * negMultiplier
@@ -35,10 +36,19 @@ function CalculationMultiplier () {
   }, [])
 
   return (
-    <div>
-      <h1>Low Risk: {lowRisk.toFixed(2)}</h1>
-      <h1>Medium Risk: {mediumRisk.toFixed(2)}</h1>
-      <h1>High Risk: {highRisk.toFixed(2)}</h1>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch' }}>
+      <div className="RiskCard">
+        <h1>Low Risk</h1>
+        <h2>{lowRisk.toFixed(2)}</h2>
+      </div>
+      <div className="RiskCard">
+        <h1>Medium Risk</h1>
+        <h2>{mediumRisk.toFixed(2)}</h2>
+      </div>
+      <div className="RiskCard">
+        <h1>High Risk</h1>
+        <h2>{highRisk.toFixed(2)}</h2>
+      </div>
     </div>
 
     // Starts at low, med, high,
