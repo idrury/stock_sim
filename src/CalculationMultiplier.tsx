@@ -36,21 +36,24 @@ function CalculationMultiplier () {
   }, [])
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch' }}>
-      <div className="RiskCard">
-        <h1 style={{ marginTop: 5 }}>SafeCo</h1>
-        <p style={{ marginBottom: 20, marginTop: -25 }}>Low Risk</p>
-        <h2 style={{ marginBottom: 5 }}>{lowRisk.toFixed(1)}</h2>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch', gap: '24px' }}>
+      <div className="RiskCard low">
+        <span style={{ fontSize: '2rem' }}>🟢</span>
+        <h1 style={{ marginTop: 10, color: '#2e7d32' }}>SafeCo</h1>
+        <p style={{ marginBottom: 20, marginTop: -10 }}>Low Risk</p>
+        <h2 style={{ marginBottom: 5, fontSize: '2.5rem' }}>{lowRisk.toFixed(1)}</h2>
       </div>
-      <div className="RiskCard">
-        <h1 style={{ marginTop: 5 }}>Apple</h1>
-        <p style={{ marginBottom: 20, marginTop: -25 }}>Medium Risk</p>
-        <h2 style={{ marginBottom: 5 }}>{mediumRisk.toFixed(1)}</h2>
+      <div className="RiskCard medium">
+        <span style={{ fontSize: '2rem' }}>🟡</span>
+        <h1 style={{ marginTop: 10, color: '#fbc02d' }}>Apple</h1>
+        <p style={{ marginBottom: 20, marginTop: -10 }}>Medium Risk</p>
+        <h2 style={{ marginBottom: 5, fontSize: '2.5rem' }}>{mediumRisk.toFixed(1)}</h2>
       </div>
-      <div className="RiskCard">
-        <h1 style={{ marginTop: 5 }}>DogeCoin</h1>
-        <p style={{ marginBottom: 20, marginTop: -25 }}>High Risk</p>
-        <h2 style={{ marginBottom: 5 }}>{highRisk.toFixed(1)}</h2>
+      <div className="RiskCard high">
+        <span style={{ fontSize: '2rem' }}>🔴</span>
+        <h1 style={{ marginTop: 10, color: '#c62828' }}>DogeCoin</h1>
+        <p style={{ marginBottom: 20, marginTop: -10 }}>High Risk</p>
+        <h2 style={{ marginBottom: 5, fontSize: '2.5rem' }}>{highRisk.toFixed(1)}</h2>
       </div>
     </div>
 
