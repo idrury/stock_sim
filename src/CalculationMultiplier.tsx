@@ -166,7 +166,7 @@ function CalculationMultiplier() {
           </h1>
         </div>
         <div className="w100" style={{ height: "100%" }}>
-          <StatusView data={lowRisk}  color={"var(--safeColor"} />
+          <StatusView data={lowRisk}  color={"var(--safeColor)"} />
         </div>
       </div>
 
@@ -179,7 +179,7 @@ function CalculationMultiplier() {
           </h1>
         </div>
         <div className="w100" style={{ height: "100%" }}>
-          <StatusView data={mediumRisk}  color={"var(--warningColor"}/>
+          <StatusView data={mediumRisk}  color={"var(--warningColor)"}/>
         </div>
       </div>
 
@@ -194,7 +194,7 @@ function CalculationMultiplier() {
           </h1>
         </div>
         <div className="w100 " style={{ height: "100%" }}>
-          <StatusView data={highRisk} color={"var(--dangerColor"} />
+          <StatusView data={highRisk} color={"var(--dangerColor)"} />
         </div>
       </div>
     </div>
